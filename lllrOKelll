@@ -1,0 +1,91 @@
+
+#include <iostream>
+#include <list>
+#include <string>
+
+using namespace std;
+
+// funcion Generador de Pasword
+string pass_gen(int length, bool capital = false, bool numers = false, bool symbols = false) {
+
+//lista de letras Minusculas
+list<char> characters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    
+//lista de letras Mayusculas
+list<char> characters_may = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+//lista de Numeros
+list<char> characters_num = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+
+// combina mapas
+list<char> selected_characters = characters;
+
+if (capital) {
+    selected_characters.insert(selected_characters.end(), characters_may.begin(), characters_may.end());
+}
+if (numers) {
+    selected_characters.insert(selected_characters.end(), characters_num.begin(), characters_num.end());
+}
+   
+    //inicializar el string  de la contraseña
+string conbination = "";
+
+    //se construye la contraseña
+    for (int x = 0; x < length; ++x) {
+        auto it = selected_characters.begin();
+        advance(it, rand() % selected_characters.size());
+        conbination += *it;
+    }
+
+    return conbination;
+
+};
+
+
+
+int main() {
+
+    
+bool capital = false, numers = false;
+int length;
+string mode;
+
+   
+    cout << "Ingresa una cantidad entre 8 y 16 digitos: " << endl;
+    cin >> length;
+
+    while (length < 8 || length > 16) {
+        cout << "Error: Número fuera de rango. Inténtalo de nuevo." << endl;
+        cin >> length;
+    }
+
+    cout << "Activar minusculas y mayusculas? y/n" << endl;
+    cin >> mode;
+
+    while (mode != "y" && mode != "n") {
+        cout << "Error: has ingresado un valor incorrecto. Inténtalo de nuevo." << endl;
+        cin >> mode;
+    }
+    
+    if(mode == "y") {
+       capital = true;   
+    }
+
+        cout << "Incluir números? y/n" << endl;
+        cin >> mode;
+
+        while (mode != "y" && mode != "n") {
+            cout << "Error: has ingresado un valor incorrecto. Inténtalo de nuevo." << endl;
+            cin >> mode;
+        }
+
+    if (mode == "y") {
+            numers = true;
+        }
+
+        string password = pass_gen(length, capital, numers);
+        cout << "Password aleatorio generado: " << password << endl;
+
+     return 0;
+    }
